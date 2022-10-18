@@ -1,5 +1,6 @@
 // var Heap = require('minheap');
 import Heap from 'minheap';
+import * as fs from 'fs';
 
 export class Heuristics {
   static _displacementHeuristic(state: State): number {
@@ -173,8 +174,10 @@ export class Puzzle {
       numNodesExplored: 0,
       numStepsToSolution: 0,
       nodesPerSecond: 0
+    
     };
-
+    fs.writeFileSync(outputCSV, "Puzzle ID,Puzzle,Time Taken(s),Nodes Explored,Steps to Solution,Nodes per Second\n")
+    fs.writeFileSync(outputFile, "")
     for (const puzzle of puzzles) {
       const stats = Puzzle.solvePuzzle(puzzle, debug);
   
@@ -183,7 +186,18 @@ export class Puzzle {
       totalStats.timeTaken += stats["timeTaken"];
       totalStats.nodesPerSecond += stats["nodesPerSecond"];
       totalStats.numStepsToSolution += stats["pathToSolution"].length;
-  
+      
+      // Write to CSV
+      fs.appendFileSync(outputCSV, `${count},${stats["startingBoard"]},${stats["timeTaken"] / 1000},${stats["numNodesExplored"]},${stats["pathToSolution"].length},${stats["nodesPerSecond"]}\n`);
+
+      // Write to file
+      fs.appendFileSync(outputFile, `-`.repeat(150) + "\n");
+      fs.appendFileSync(outputFile, `Puzzle # ${count} | ${stats["startingBoard"]}\n`);
+      fs.appendFileSync(outputFile, `\tTime taken to solve: ${stats["timeTaken"] / 1000} seconds\n`);
+      fs.appendFileSync(outputFile, `\tNumber of nodes explored: ${stats["numNodesExplored"]}\n`);
+      fs.appendFileSync(outputFile, `\tNumber of steps to solution: ${stats["pathToSolution"].length}\n`);
+      fs.appendFileSync(outputFile, `\tNodes per second: ${stats["nodesPerSecond"]}\n`);
+      fs.appendFileSync(outputFile, `\tPath to solution: ${stats["pathToSolution"]}\n`);
       count += 1;
     }
 
@@ -197,6 +211,16 @@ export class Puzzle {
       "Steps to Solution": `${totalStats.numStepsToSolution / puzzles.length}`
     });
     console.log("=".repeat(150));  
+
+    // Write average stats to file
+    fs.appendFileSync(outputFile, "=".repeat(150) + "\n");
+    fs.appendFileSync(outputFile, `Average Stats for ${puzzles.length} ${puzzles[0].boardLength-1}-Puzzles:\n`);
+    fs.appendFileSync(outputFile, `\tTime Taken: ${totalStats.timeTaken / puzzles.length}ms\n`);
+    fs.appendFileSync(outputFile, `\tNodes Explored: ${totalStats.numNodesExplored / puzzles.length}\n`);
+    fs.appendFileSync(outputFile, `\tSteps to Solution: ${totalStats.numStepsToSolution / puzzles.length}\n`);
+    fs.appendFileSync(outputFile, `\tNodes Per Second: ${totalStats.nodesPerSecond / puzzles.length}\n`);
+    fs.appendFileSync(outputFile, "=".repeat(150) + "\n");
+
     return;
   }
 
@@ -241,7 +265,7 @@ export class Puzzle {
       }
       
       if (debug) {
-        if (explored.length % 100000 == 0) {
+        if (Object.keys(explored).length % 100000 == 0) {
           console.log('#explored:\t', explored.length);
           const now = new Date().getTime();
           console.log(`nps:\t\t ${explored.length / (now - start)}\n`);
