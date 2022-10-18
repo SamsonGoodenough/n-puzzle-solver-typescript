@@ -1,0 +1,9 @@
+{
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^18.11.0"
+  },
+  "dependencies": {
+    "minheap": "^1.0.2"
+  }
+}
