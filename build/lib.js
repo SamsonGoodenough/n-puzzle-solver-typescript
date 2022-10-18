@@ -22,8 +22,8 @@ export class Heuristics {
         let h = 0;
         for (let i = 0; i < state.boardLength; i++) {
             if (state.board[i] != 0) {
-                let [x1, y1] = state._get2dCoord(i);
-                let [x2, y2] = state._get2dCoord(state.board[i]);
+                const [x1, y1] = state._get2dCoord(i);
+                const [x2, y2] = state._get2dCoord(state.board[i]);
                 h += Math.abs(x1 - x2) + Math.abs(y1 - y2);
             }
         }
@@ -33,8 +33,8 @@ export class Heuristics {
         let h = 0;
         for (let i = 0; i < state.boardLength; i++) {
             if (state.board[i] != 0) {
-                let [x1, y1] = state._get2dCoord(i);
-                let [x2, y2] = state._get2dCoord(state.board[i]);
+                const [x1, y1] = state._get2dCoord(i);
+                const [x2, y2] = state._get2dCoord(state.board[i]);
                 if (x1 != x2) {
                     h += 1;
                 }
@@ -49,14 +49,14 @@ export class Heuristics {
         let h = 0;
         for (let i = 0; i < state.boardLength; i++) {
             if (state.board[i] != 0) {
-                let [x1, y1] = state._get2dCoord(i);
-                let [x2, y2] = state._get2dCoord(state.board[i]);
+                const [x1, y1] = state._get2dCoord(i);
+                const [x2, y2] = state._get2dCoord(state.board[i]);
                 h += Math.abs(x1 - x2) + Math.abs(y1 - y2);
                 if (y1 == y2) { // Tile is in the same row as it's goal tile
                     for (let j = 0; j < state.boardLength; j++) { // Check if there is a tile in the same row that gives a linear conflict
                         if (state.board[j] != 0) {
-                            let [x3, y3] = state._get2dCoord(j);
-                            let [x4, y4] = state._get2dCoord(state.board[j]);
+                            const [x3, y3] = state._get2dCoord(j);
+                            const [x4, y4] = state._get2dCoord(state.board[j]);
                             if (y3 == y1) { // on the same row
                                 if (x3 < x1 && x4 >= x1) { // tile is in the way
                                     h += 2;
@@ -68,8 +68,8 @@ export class Heuristics {
                 if (x1 == x2) { // Tile is in the same coloumn as it's goal tile
                     for (let j = 0; j < state.boardLength; j++) { // Check if there is a tile in the same coloumn that gives a linear conflict
                         if (state.board[j] != 0) {
-                            let [x3, y3] = state._get2dCoord(j);
-                            let [x4, y4] = state._get2dCoord(state.board[j]);
+                            const [x3, y3] = state._get2dCoord(j);
+                            const [x4, y4] = state._get2dCoord(state.board[j]);
                             if (x3 == x1) { // on the same col
                                 if (y3 < y1 && y4 >= y1) { // tile is in the way
                                     h += 2;
@@ -95,8 +95,8 @@ export class Heuristics {
         let h = 0;
         for (let i = 0; i < state.boardLength; i++) {
             if (state.board[i] != 0) {
-                let [x1, y1] = state._get2dCoord(i);
-                let [x2, y2] = state._get2dCoord(state.board[i]);
+                const [x1, y1] = state._get2dCoord(i);
+                const [x2, y2] = state._get2dCoord(state.board[i]);
                 h += Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2));
             }
         }
@@ -146,9 +146,9 @@ export class Puzzle {
             }
             var puzzles = [];
             while (puzzles.length < numPuzzles) {
-                var _board = Array.from(Array(size + 1).keys());
-                var board = _board.sort((a, b) => 0.5 - Math.random());
-                var s = new State(board, Math.sqrt(board.length), 0, null, [], heuristic);
+                const _board = Array.from(Array(size + 1).keys());
+                const board = _board.sort((a, b) => 0.5 - Math.random());
+                const s = new State(board, Math.sqrt(board.length), 0, null, [], heuristic);
                 if (s.isSolvable()) {
                     puzzles.push(s);
                 }
@@ -216,15 +216,15 @@ export class Puzzle {
             const secondary = a.h - b.h;
             return primary == 0 ? secondary : primary;
         }); // create heap
-        let startingBoard = s;
-        let start = new Date().getTime();
+        const startingBoard = s;
+        const start = new Date().getTime();
         frontier.push({ f: s.f, h: s.h, str: s.getStateAsStr() });
         if (debug)
             console.log(`start:\t${State.arrayToStr(s.board)}`);
         let count = 0;
         while (frontier.len) { // loop until frontier is empty
-            let s = State.strToState(frontier.pop()['str']);
-            let exploredCost = explored[State.arrayToStr(s.board)];
+            const s = State.strToState(frontier.pop()['str']);
+            const exploredCost = explored[State.arrayToStr(s.board)];
             if (exploredCost) {
                 if (exploredCost <= s.g) { // if the explored cost is less than the current cost, then we don't need to explore this state
                     continue;
@@ -233,8 +233,8 @@ export class Puzzle {
             explored[State.arrayToStr(s.board)] = s.g;
             if (s.h == 0) { // check if at the goal state
                 // pass the solution and stats back to the caller
-                let end = new Date().getTime();
-                let stats = {
+                const end = new Date().getTime();
+                const stats = {
                     timeTaken: end - start,
                     numNodesExplored: Object.keys(explored).length,
                     pathToSolution: [...s.path],
@@ -284,8 +284,8 @@ export class State {
     getMoves() {
         let moves = [];
         let index = this.board.indexOf(0);
-        let row = Math.floor(index / this.width);
-        let col = index % this.width;
+        const row = Math.floor(index / this.width);
+        const col = index % this.width;
         if (row > 0) {
             let move = this._swap(index, index - this.width);
             if (move)
@@ -309,8 +309,8 @@ export class State {
         return moves;
     }
     _swap(index1, index2) {
-        let board = this.board.slice();
-        let step = board[index2];
+        const board = this.board.slice();
+        const step = board[index2];
         if (step == this.path[this.path.length - 1])
             return null;
         board[index1] = board[index2];
