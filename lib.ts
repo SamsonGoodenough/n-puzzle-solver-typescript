@@ -245,15 +245,16 @@ export class Puzzle {
         }
       }
       explored[State.arrayToStr(s.board)] = s.g;
+      const exploredLength = Object.keys(explored).length;
       
       if (s.h == 0) { // check if at the goal state
         // pass the solution and stats back to the caller
         const end = new Date().getTime();
         const stats: any = {
           timeTaken: end - start,
-          numNodesExplored: Object.keys(explored).length,
+          numNodesExplored: exploredLength,
           pathToSolution: [...s.path],
-          nodesPerSecond: Object.keys(explored).length / ((end - start) != 0 ? (end - start) : 0.01),
+          nodesPerSecond: exploredLength / ((end - start) != 0 ? (end - start) : 0.01),
           startingBoard: startingBoard.board.join('-')
         };
         if (debug) {
@@ -264,10 +265,22 @@ export class Puzzle {
       }
       
       if (debug) {
-        if (Object.keys(explored).length % 100000 == 0) {
-          console.log('#explored:\t', explored.length);
-          const now = new Date().getTime();
-          console.log(`nps:\t\t ${explored.length / (now - start)}\n`);
+        const now = new Date().getTime();
+        if (exploredLength % 10000 == 0) {
+          console.log('#explored:\t', exploredLength);
+          console.log(`nps:\t\t ${exploredLength / (now - start)}\n`);
+        }
+
+        if (now > start + 5*1000*60) {
+          console.log(`\t\tSkipping: ${count}`);
+          const stats: any = {
+            timeTaken: 0,
+            numNodesExplored: 0,
+            pathToSolution: [0],
+            nodesPerSecond: 0,
+            startingBoard: '0'
+          };
+          return stats;
         }
       }
 

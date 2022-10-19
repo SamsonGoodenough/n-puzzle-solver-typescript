@@ -104,10 +104,16 @@ const ps = [
   [14,8,13,15,12,4,0,1,9,2,6,3,5,7,11,10]
 ];
 var puzzles = [];
-for (var p of ps) {
+// for (var p of ps) {
+//   puzzles.push(new State(p, Math.sqrt(p.length), 0, null, [], Heuristics._manhattanHeuristic));
+// }
+
+// loop backwards through the puzzles
+for (var i = ps.length - 1; i >= 0; i--) {
+  const p = ps[i];
   puzzles.push(new State(p, Math.sqrt(p.length), 0, null, [], Heuristics._manhattanHeuristic));
 }
 
-Puzzle.solvePuzzleArray(puzzles, 'output/output.txt', 'output/output.csv', false);
+Puzzle.solvePuzzleArray(puzzles, 'output/output.txt', 'output/output.csv', true);
 var end = new Date().getTime();
 console.log('Time taken: ' + (end - start) + 'ms');

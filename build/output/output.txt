@@ -1,0 +1,21 @@
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Puzzle # 1 | 0
+	Time taken to solve: 0 seconds
+	Number of nodes explored: 0
+	Number of steps to solution: 1
+	Nodes per second: 0
+	Path to solution: 0
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Puzzle # 2 | 0
+	Time taken to solve: 0 seconds
+	Number of nodes explored: 0
+	Number of steps to solution: 1
+	Nodes per second: 0
+	Path to solution: 0
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Puzzle # 3 | 0
+	Time taken to solve: 0 seconds
+	Number of nodes explored: 0
+	Number of steps to solution: 1
+	Nodes per second: 0
+	Path to solution: 0
