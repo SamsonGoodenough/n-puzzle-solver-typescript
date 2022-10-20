@@ -187,7 +187,15 @@ export class Puzzle {
       totalStats.numStepsToSolution += stats["pathToSolution"].length;
       
       // Write to CSV
-      fs.appendFileSync(outputCSV, `${count},${stats["startingBoard"]},${stats["timeTaken"] / 1000},${stats["numNodesExplored"]},${stats["pathToSolution"].length},${stats["nodesPerSecond"]}\n`);
+      const row = [
+        count,
+        stats["startingBoard"],
+        stats["timeTaken"] / 1000,
+        stats["numNodesExplored"],
+        stats["pathToSolution"].length,
+        stats["nodesPerSecond"]
+      ]
+      fs.appendFileSync(outputCSV, `${row.join(',')}\n`);
 
       // Write to file
       fs.appendFileSync(outputFile, `-`.repeat(150) + "\n");
@@ -270,10 +278,6 @@ export class Puzzle {
           console.log(`nps:\t\t ${explored.length / (now - start)}\n`);
         }
       }
-
-      // console.log(s.getMoves());
-      // console.log(frontier);
-      // if (count > 3) break;
       
       for (let move of s.getMoves()) { // add all possible moves to the frontier
         frontier.push(move);
