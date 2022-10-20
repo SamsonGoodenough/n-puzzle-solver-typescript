@@ -3,7 +3,7 @@
     "target": "es6",
     "module": "es2022",
     "outDir": "build",
-    "watch": true,
+    "watch": false,
     "downlevelIteration": true,
     "lib": ["es2022", "DOM"],
     "moduleResolution": "node"
